@@ -11,7 +11,7 @@
   
   <p align="center">
     <p>🇬🇷&nbsp;&nbsp;Greek &bull; 🇳🇱&nbsp;&nbsp;Based in NL </p>
-    <p>💻&nbsp;&nbsp;Tech Junkie &bull; 🐳&nbsp;&nbsp;Docker Enthusiast &bull; 🖥&nbsp;&nbsp;DevOps/Software engineer</p>
+    <p>💻&nbsp;&nbsp;Tech Junkie &bull; 🐳&nbsp;&nbsp;Docker Enthusiast &bull; 🖥&nbsp;&nbsp;DevOps/Software engineer &bull; 🐘&nbsp;&nbsp;Artisan</p>
     </p>🐶&nbsp;&nbsp;Hooman to a Malchi <strong>(Loki)</strong> & 🦜&nbsp;&nbsp;2 Lovebirds <strong>(Ben & Jerry)</strong></p>
   </p>
 
