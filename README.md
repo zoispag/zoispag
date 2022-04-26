@@ -20,19 +20,12 @@
 
 <a href="https://github.com/zoispag">
   <div>
-    <img width="100%" src="https://github-readme-stats.vercel.app/api?username=zoispag&show_icons=true&theme=vue-dark&count_private=true"/>
-  </div>
-  
-  <div align="center">
-    <img width="75%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=zoispag&langs_count=7&theme=vue-dark&count_private=true&layout=compact"/>
+    <img width="49%" src="https://github-readme-stats.vercel.app/api?username=zoispag&show_icons=true&theme=vue-dark&count_private=true"/>
+    <img width="49%" src="https://github-readme-stats.vercel.app/api/wakatime?username=zoispag&layout=compact&theme=vue-dark"/>
   </div>
 
   <div align="center">
     <img src="https://raw.githubusercontent.com/zoispag/zoispag/output/github-contribution-grid-snake.svg"/>
-  </div>
-
-  <div align="center">
-    <img width="80%" src="https://github-readme-stats.vercel.app/api/wakatime?username=zoispag&layout=compact&theme=vue-dark"/>
   </div>
 </a>
 
