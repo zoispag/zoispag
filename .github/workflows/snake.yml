@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: '* */12 * * *'
+    - cron: '0 */12 * * *'
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: Platane/snk@master
+      - uses: Platane/snk@v2
         with:
           github_user_name: zoispag
           svg_out_path: dist/github-contribution-grid-snake.svg
