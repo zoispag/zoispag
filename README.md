@@ -18,6 +18,7 @@
   <hr />
 </div>
 
+<!--
 <a href="https://github.com/zoispag">
   <div>
     <img width="49%" src="https://github-readme-stats.vercel.app/api?username=zoispag&show_icons=true&theme=vue-dark&count_private=true"/>
@@ -28,4 +29,4 @@
     <img src="https://raw.githubusercontent.com/zoispag/zoispag/output/github-contribution-grid-snake.svg"/>
   </div>
 </a>
-
+-->
