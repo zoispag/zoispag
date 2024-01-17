@@ -13,7 +13,7 @@
     <p>🇬🇷&nbsp;&nbsp;Greek &bull; 🇳🇱&nbsp;&nbsp;Based in NL </p>
     <p>🍼&nbsp;&nbsp;Dad of a wonderful baby-girl</p>
     <p>🐶&nbsp;&nbsp;Hooman of a cute Malchi, name <strong>Loki</strong></p>
-  <p>🖥&nbsp;&nbsp;DevOps/Software engineer at <a href="https://www.kyos.com/"><strong>@kyosenergy</strong></a></p>
+  <p>🖥&nbsp;&nbsp;Principal DevOps Engineer at <a href="https://www.kyos.com/"><strong>@kyosenergy</strong></a></p>
     <p>☸️&nbsp;&nbsp;Kubernetes &bull; 🐳&nbsp;&nbsp;Docker &bull; 🐘&nbsp;&nbsp;PHP &bull; <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" width="16">&nbsp;Laravel</p>
   </p>
 </div>
