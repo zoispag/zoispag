@@ -39,13 +39,15 @@ jobs:
                 const body = JSON.parse(init.body);
                 if (body?.query?.includes('contributionsCollection')) {
                   const username = body.variables?.login;
+                  if (!username) throw new Error('Username not provided in GraphQL query variables');
 
                   // Fetch from GitHub's public HTML contributions endpoint (no resource limits)
                   const htmlRes = await _fetch(
                     `https://github.com/users/${username}/contributions`,
                     { headers: { 'User-Agent': 'snake-animation-generator' } }
                   );
-                  if (!htmlRes.ok) throw new Error(`HTML fetch failed: ${htmlRes.status}`);
+                  if (!htmlRes.ok)
+                    throw new Error(`HTML fetch failed: ${htmlRes.status} ${htmlRes.statusText}`);
                   const html = await htmlRes.text();
 
                   // Parse contribution cells from HTML attributes.
@@ -77,13 +79,13 @@ jobs:
                   for (const { date, level } of cells) {
                     const [y, mo, day] = date.split('-').map(Number);
                     const dayMs = Date.UTC(y, mo - 1, day);
-                    const days = Math.floor((dayMs - originMs) / MS_PER_DAY);
+                    const days = Math.round((dayMs - originMs) / MS_PER_DAY);
                     const weekIdx = Math.floor(days / 7);
                     if (!weekMap.has(weekIdx)) weekMap.set(weekIdx, []);
                     weekMap.get(weekIdx).push({
                       contributionCount: level,
                       contributionLevel: levelToStr(level),
-                      weekday: (originWeekday + days) % 7,
+                      weekday: ((originWeekday + days) % 7 + 7) % 7,
                       date,
                     });
                   }
