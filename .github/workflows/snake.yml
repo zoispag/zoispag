@@ -25,6 +25,7 @@ jobs:
           // Intercept the GitHub GraphQL contributionsCollection call and serve data
           // from the public HTML contributions page instead, which has no resource limits.
           const _fetch = globalThis.fetch;
+          // Map GitHub contribution level (0=none … 4=fourth quartile) to the GraphQL enum string.
           const levelToStr = (l) =>
             ['NONE', 'FIRST_QUARTILE', 'SECOND_QUARTILE', 'THIRD_QUARTILE', 'FOURTH_QUARTILE'][l] || 'NONE';
 
@@ -76,7 +77,7 @@ jobs:
                   for (const { date, level } of cells) {
                     const [y, mo, day] = date.split('-').map(Number);
                     const dayMs = Date.UTC(y, mo - 1, day);
-                    const days = (dayMs - originMs) / MS_PER_DAY;
+                    const days = Math.floor((dayMs - originMs) / MS_PER_DAY);
                     const weekIdx = Math.floor(days / 7);
                     if (!weekMap.has(weekIdx)) weekMap.set(weekIdx, []);
                     weekMap.get(weekIdx).push({
