@@ -22,10 +22,12 @@ jobs:
           cat > generate-snake.mjs << 'SCRIPT_EOF'
           import * as fs from 'node:fs';
 
-          // Patch globalThis.fetch to add explicit from/to date parameters to the
-          // contributionsCollection GraphQL query. Without this, GitHub's API returns
-          // "Resource limits for this query exceeded" when no date range is provided.
+          // Intercept the GitHub GraphQL contributionsCollection call and serve data
+          // from the public HTML contributions page instead, which has no resource limits.
           const _fetch = globalThis.fetch;
+          const levelToStr = (l) =>
+            ['NONE', 'FIRST_QUARTILE', 'SECOND_QUARTILE', 'THIRD_QUARTILE', 'FOURTH_QUARTILE'][l] || 'NONE';
+
           globalThis.fetch = async (url, init) => {
             if (
               typeof url === 'string' &&
@@ -34,31 +36,66 @@ jobs:
             ) {
               try {
                 const body = JSON.parse(init.body);
-                if (
-                  body?.query?.includes('contributionsCollection') &&
-                  !body.query.includes('$from')
-                ) {
-                  const to = new Date();
-                  const from = new Date(to);
-                  from.setDate(from.getDate() - 365);
+                if (body?.query?.includes('contributionsCollection')) {
+                  const username = body.variables?.login;
 
-                  body.query = body.query
-                    .replace(
-                      'query ($login: String!)',
-                      'query ($login: String!, $from: DateTime!, $to: DateTime!)'
-                    )
-                    .replace(
-                      'contributionsCollection {',
-                      'contributionsCollection(from: $from, to: $to) {'
-                    );
-                  body.variables = {
-                    ...body.variables,
-                    from: from.toISOString(),
-                    to: to.toISOString(),
-                  };
-                  init = { ...init, body: JSON.stringify(body) };
+                  // Fetch from GitHub's public HTML contributions endpoint (no resource limits)
+                  const htmlRes = await _fetch(
+                    `https://github.com/users/${username}/contributions`,
+                    { headers: { 'User-Agent': 'snake-animation-generator' } }
+                  );
+                  if (!htmlRes.ok) throw new Error(`HTML fetch failed: ${htmlRes.status}`);
+                  const html = await htmlRes.text();
+
+                  // Parse contribution cells from HTML attributes
+                  const cells = [];
+                  const re = /data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"/g;
+                  let m;
+                  while ((m = re.exec(html)) !== null)
+                    cells.push({ date: m[1], level: Number(m[2]) });
+
+                  if (cells.length === 0) throw new Error('No contribution cells found in HTML');
+
+                  // Group by week, computing weekday from date.
+                  // Use UTC arithmetic throughout to avoid DST issues.
+                  const [oy, om, od] = cells[0].date.split('-').map(Number);
+                  const originMs = Date.UTC(oy, om - 1, od);
+                  const weekMap = new Map();
+                  for (const { date, level } of cells) {
+                    const [y, mo, day] = date.split('-').map(Number);
+                    const dayMs = Date.UTC(y, mo - 1, day);
+                    const days = (dayMs - originMs) / 86400_000;
+                    const weekIdx = Math.floor(days / 7);
+                    const d = new Date(dayMs);
+                    if (!weekMap.has(weekIdx)) weekMap.set(weekIdx, []);
+                    weekMap.get(weekIdx).push({
+                      contributionCount: level,
+                      contributionLevel: levelToStr(level),
+                      weekday: d.getUTCDay(),
+                      date,
+                    });
+                  }
+
+                  const weeks = [...weekMap.entries()]
+                    .sort(([a], [b]) => a - b)
+                    .map(([, contributionDays]) => ({ contributionDays }));
+
+                  return new Response(
+                    JSON.stringify({
+                      data: {
+                        user: {
+                          contributionsCollection: {
+                            contributionCalendar: { weeks },
+                          },
+                        },
+                      },
+                    }),
+                    { status: 200, headers: { 'Content-Type': 'application/json' } }
+                  );
                 }
-              } catch (_) {}
+              } catch (err) {
+                console.error('HTML contributions fetch failed, falling back to GraphQL:', err.message);
+              }
             }
             return _fetch(url, init);
           };
