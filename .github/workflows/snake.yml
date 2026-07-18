@@ -47,24 +47,34 @@ jobs:
                   if (!htmlRes.ok) throw new Error(`HTML fetch failed: ${htmlRes.status}`);
                   const html = await htmlRes.text();
 
-                  // Parse contribution cells from HTML attributes
+                  // Parse contribution cells from HTML attributes.
+                  // Match each <td> element independently so attribute order doesn't matter.
                   const cells = [];
-                  const re = /data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"/g;
+                  const tdRe = /<td[^>]+>/g;
+                  const dateRe = /data-date="(\d{4}-\d{2}-\d{2})"/;
+                  const levelRe = /data-level="(\d)"/;
                   let m;
-                  while ((m = re.exec(html)) !== null)
-                    cells.push({ date: m[1], level: Number(m[2]) });
+                  while ((m = tdRe.exec(html)) !== null) {
+                    const dm = dateRe.exec(m[0]);
+                    const lm = levelRe.exec(m[0]);
+                    if (dm && lm)
+                      cells.push({ date: dm[1], level: Number(lm[1]) });
+                  }
 
                   if (cells.length === 0) throw new Error('No contribution cells found in HTML');
 
                   // Group by week, computing weekday from date.
                   // Use UTC arithmetic throughout to avoid DST issues.
+                  // Note: the HTML endpoint only exposes contribution levels (0-4), not counts;
+                  // contributionCount is set to level since the animation uses level for coloring.
+                  const MS_PER_DAY = 86400_000;
                   const [oy, om, od] = cells[0].date.split('-').map(Number);
                   const originMs = Date.UTC(oy, om - 1, od);
                   const weekMap = new Map();
                   for (const { date, level } of cells) {
                     const [y, mo, day] = date.split('-').map(Number);
                     const dayMs = Date.UTC(y, mo - 1, day);
-                    const days = (dayMs - originMs) / 86400_000;
+                    const days = (dayMs - originMs) / MS_PER_DAY;
                     const weekIdx = Math.floor(days / 7);
                     const d = new Date(dayMs);
                     if (!weekMap.has(weekIdx)) weekMap.set(weekIdx, []);
