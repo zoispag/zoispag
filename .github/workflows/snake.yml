@@ -15,12 +15,90 @@ jobs:
       contents: write
 
     steps:
-      - uses: Platane/snk/svg-only@v3
-        with:
-          github_user_name: zoispag
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          outputs: |
-            dist/github-contribution-grid-snake.svg
+      - name: Generate snake animation
+        run: |
+          npm install generate-snake-animation@3.5.0
+
+          cat > generate-snake.mjs << 'SCRIPT_EOF'
+          import * as fs from 'node:fs';
+
+          // Patch globalThis.fetch to add explicit from/to date parameters to the
+          // contributionsCollection GraphQL query. Without this, GitHub's API returns
+          // "Resource limits for this query exceeded" when no date range is provided.
+          const _fetch = globalThis.fetch;
+          globalThis.fetch = async (url, init) => {
+            if (
+              typeof url === 'string' &&
+              url.includes('/graphql') &&
+              init?.method === 'POST'
+            ) {
+              try {
+                const body = JSON.parse(init.body);
+                if (
+                  body?.query?.includes('contributionsCollection') &&
+                  !body.query.includes('$from')
+                ) {
+                  const to = new Date();
+                  const from = new Date(to);
+                  from.setDate(from.getDate() - 365);
+
+                  body.query = body.query
+                    .replace(
+                      'query ($login: String!)',
+                      'query ($login: String!, $from: DateTime!, $to: DateTime!)'
+                    )
+                    .replace(
+                      'contributionsCollection {',
+                      'contributionsCollection(from: $from, to: $to) {'
+                    );
+                  body.variables = {
+                    ...body.variables,
+                    from: from.toISOString(),
+                    to: to.toISOString(),
+                  };
+                  init = { ...init, body: JSON.stringify(body) };
+                }
+              } catch (_) {}
+            }
+            return _fetch(url, init);
+          };
+
+          const { generateSnakeAnimation } = await import('generate-snake-animation');
+
+          const results = await generateSnakeAnimation(
+            {
+              platform: 'github',
+              username: 'zoispag',
+              githubToken: process.env.GITHUB_TOKEN,
+            },
+            [
+              {
+                filename: 'dist/github-contribution-grid-snake.svg',
+                format: 'svg',
+                drawOptions: {
+                  colorBackground: '#ffffff',
+                  colorDotBorder: '#1b1f230a',
+                  colorDots: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
+                  colorEmpty: '#ebedf0',
+                  colorSnake: 'purple',
+                  sizeDotBorderRadius: 2,
+                  sizeCell: 16,
+                  sizeDot: 12,
+                },
+                animationOptions: { stepDurationMs: 100, frameByStep: 1 },
+              },
+            ]
+          );
+
+          fs.mkdirSync('dist', { recursive: true });
+          if (!results[0]) throw new Error('No SVG output generated');
+          fs.writeFileSync('dist/github-contribution-grid-snake.svg', results[0]);
+          console.log('Snake animation generated successfully');
+          SCRIPT_EOF
+
+          node generate-snake.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: crazy-max/ghaction-github-pages@v5
         with:
