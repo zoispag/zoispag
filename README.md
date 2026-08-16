@@ -26,6 +26,7 @@
 
 - 🇬🇷 &nbsp;Greek, based in the Netherlands 🇳🇱
 - ☸️ &nbsp;Principal DevOps Engineer, taming Kubernetes for a living
+- 🔐 &nbsp;Security & Compliance Engineering — ISO27001 and SOC2
 - 👧 &nbsp;Dad of 2 wonderful girls
 - 🐾 &nbsp;Hooman of 2 dogs and a cat — **Loki**, **Liza** and **Mozzarella** 🐱
 - 💬 &nbsp;Ask me about Kubernetes/Helm, ArgoCD, Crossplane/Terraform, Docker, CI/CD, PHP/Laravel & Go
