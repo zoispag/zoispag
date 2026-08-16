@@ -25,9 +25,9 @@
 ### 🧑‍💻 About me
 
 - 🇬🇷 &nbsp;Greek, based in the Netherlands 🇳🇱
-- 🖥️ &nbsp;Principal DevOps Engineer, taming Kubernetes for a living
-- 🍼 &nbsp;Dad of 2 wonderful baby-girls
-- 🐶 &nbsp;Hooman of a cute Malchi named **Loki**
+- ☸️ &nbsp;Principal DevOps Engineer, taming Kubernetes for a living
+- 👧 &nbsp;Dad of 2 wonderful girls
+- 🐾 &nbsp;Hooman of 2 dogs and a cat — **Loki**, **Liza** and **Mozzarella** 🐱
 - 💬 &nbsp;Ask me about Kubernetes/Helm, ArgoCD, Crossplane/Terraform, Docker, CI/CD, PHP/Laravel & Go
 - 📫 &nbsp;Reach me on [Twitter](https://twitter.com/zoispag) or [Medium](https://medium.com/@zoispag)
 
