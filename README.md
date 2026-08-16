@@ -51,6 +51,7 @@
 | [**go-python-runner**](https://github.com/zoispag/go-python-runner) | Runs Python code inside a virtual environment, from Go |
 | [**dotbot-krew**](https://github.com/zoispag/dotbot-krew) | Dotbot plugin adding a `krewfile` directive to install kubectl krew plugins |
 | [**omniroute-tray**](https://github.com/zoispag/omniroute-tray) | macOS menu-bar app supervising the OmniRoute AI router |
+| [**opencode-plan-canvas**](https://github.com/zoispag/opencode-plan-canvas) | Live HTML canvas for opencode plans, with a plugin that auto-renders as Prometheus plans and Atlas executes |
 | [**.dotfiles**](https://github.com/zoispag/.dotfiles) | My dotfiles, managed with dotbot |
 
 **AMKA validator** — the same Greek social security number validator, implemented in 5 languages:
