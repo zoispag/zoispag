@@ -30,6 +30,7 @@
 - 👧 &nbsp;Dad of 2 wonderful girls
 - 🐾 &nbsp;Hooman of 2 dogs and a cat — **Loki**, **Liza** and **Mozzarella** 🐱
 - 💬 &nbsp;Ask me about Kubernetes/Helm, ArgoCD, Crossplane/Terraform, Docker, CI/CD, PHP/Laravel & Go
+- 🤖 &nbsp;Lately building AI agent tooling — plan canvases, routers and other coding-agent plumbing
 - 📫 &nbsp;Reach me on [Twitter](https://twitter.com/zoispag) or [Medium](https://medium.com/@zoispag)
 
 ---
@@ -55,7 +56,11 @@
 | [**opencode-plan-canvas**](https://github.com/zoispag/opencode-plan-canvas) | Live HTML canvas for opencode plans, with a plugin that auto-renders as Prometheus plans and Atlas executes |
 | [**.dotfiles**](https://github.com/zoispag/.dotfiles) | My dotfiles, managed with dotbot |
 
-**AMKA validator** — the same Greek social security number validator, implemented in 5 languages:
+---
+
+### 🧬 One problem, five languages
+
+**AMKA validator** — the same Greek social security number validator, written five times over:
 [Rust](https://github.com/zoispag/amka-rs) ·
 [Go](https://github.com/zoispag/amka-go) ·
 [Python](https://github.com/zoispag/amka-py) ·
